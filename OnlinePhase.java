@@ -27,7 +27,7 @@ public class OnlinePhase {
         byte shortenedDigest[] = new byte[4];
         int i;
         // returns a MessageDigest object that implements the specified digest algorithm.
-        MessageDigest md = null;
+        MessageDigest md;
         try {
             md = MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
@@ -47,18 +47,22 @@ public class OnlinePhase {
 
         digest = md.digest(passwd.getBytes());
 
-        // We only need the first 32 bit (the first 4 byte), so we cut it down
-
-        for (i = 0; i < 4; i++) {
-            shortenedDigest[i] = digest[i];
+        /* We only need the first 32 bit (the first 4 byte), so we copy the
+         * last 4 bytes to our own array
+         */
+        for (i = 1; i <= 4; i++) {
+            shortenedDigest[4 - i] = digest[digest.length - i];
         }
-
         // check whether the hash table contains a fitting entry.
         if (ht.get(shortenedDigest) == null) {
             System.out.println("No password found.");
         } else {
             System.out.println("A password with the same hash value has been found: " + ht.get(shortenedDigest));
         }
-
+        try {
+            br.close();
+        } catch (IOException IOe) {
+            System.out.println("Sorry, couldn't close the Buffered Reader. :(");
+        }
     }
 }
