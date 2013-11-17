@@ -1,3 +1,9 @@
+/**
+ *
+ * @author thermi
+ */
+
+package algoprojekt.OnlinePhase;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -31,14 +37,16 @@ public class OnlinePhase {
         try {
             md = MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
-            System.out.println("Sorrby, Java doesn't know that algorithm: " + algorithm);
+            System.err.println("Sorrby, Java doesn't know that algorithm: " + algorithm);
+            e.printStackTrace();
             return;
         }
         System.out.println("Enter a password:");
         try {
             passwd = br.readLine();
         } catch (IOException IOe) {
-            System.out.println("Sorry, something bad happened when we tried to read from the terminal. :( ");
+            System.err.println("Sorry, something bad happened when we tried to read from the terminal. :( ");
+            IOe.printStackTrace();
             return;
         }
         /* md.digest() returns and takes a byte array, so we need to transform the string
@@ -62,7 +70,7 @@ public class OnlinePhase {
         try {
             br.close();
         } catch (IOException IOe) {
-            System.out.println("Sorry, couldn't close the Buffered Reader. :(");
+            System.err.println("Sorry, couldn't close the Buffered Reader. :(");
         }
     }
 }
