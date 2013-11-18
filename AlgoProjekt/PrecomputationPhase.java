@@ -29,6 +29,20 @@ public class PrecomputationPhase {
     private int reSeedThreshold;
     private int counter;
 
+    public PrecomputationPhase() {
+        reSeedThreshold = 150;
+        byte[] buf;
+        ByteBuffer bb;
+        /* Generate a seed */
+        buf = secgen.generateSeed(8);
+
+        /* Wrap the seed, so we can get it's long value */
+        bb = ByteBuffer.wrap(buf);
+
+        /* Set the seed of the PRNG */
+        this.gen.setSeed(bb.getLong());
+    }
+
     /**
      * This constructor sets the rekeythreshold to the given value.
      */
@@ -87,6 +101,36 @@ public class PrecomputationPhase {
         StringBuilder password = new StringBuilder();
         String legalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno"
                 + "pqrstuvwxyz1234567890!§$%&/()=?`'+*#-.:,;";
+        int i, r, l;
+
+        for (i = 0; i <= 6; i++) {
+
+            /*
+             * Reseed when the threshold is reached.
+             */
+            if (reSeedThreshold == counter) {
+                reSeed();
+                counter = 0;
+            }
+            /*
+             * Append a random character to the password string
+             */
+            /*
+             * We do this to prevent race conditions.
+             */
+            l = legalChars.length();
+            r = gen.nextInt(l);
+            password.append(legalChars.charAt(r));
+            counter++;
+        }
+        return password.toString();
+    }
+
+    public String generatePassword(String legalChars) {
+        /* We still need a
+         *
+         */
+        StringBuilder password = new StringBuilder();
         int i, r, l;
 
         for (i = 0; i <= 6; i++) {
@@ -227,15 +271,15 @@ public class PrecomputationPhase {
     }
 
     /**
-     * This method will generate a hashtable and fill it with the given amount
-     * of digest - password pairs.
+     * This method will generate a hashtable that maps byte arrays to strings
+     * and fill it with the given amount of digest - password pairs.
      */
-    public Hashtable makeTable(int amount) {
+    public Hashtable makeTable(int amount, String legalChars) {
         int i;
         String password;
         Hashtable table = new Hashtable<byte[], String>();
         for (i = 0; i < amount; i++) {
-            password = generatePassword();
+            password = generatePassword(legalChars);
             table.put(makeDigest(password, "SHA-1"), password);
         }
         return table;
