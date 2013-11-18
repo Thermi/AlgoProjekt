@@ -1,5 +1,4 @@
-
-package algoprojekt;
+package AlgoProjekt;
 
 /**
  *
@@ -24,9 +23,12 @@ public class AlgoProjekt {
          * -l INTEGER to generate passwords of the length INTEGER (long option: --length)
          * -c STRING to generate passwords consisting of the given STRING (long option: --characters)
          */
+
         /* we create a hashtable which uses the hash of the password as the key
          * to get the password from the hashtable */
+
         Hashtable<byte[], String> table = new Hashtable<byte[], String>();
+
         // more is to be written.
     }
 }
