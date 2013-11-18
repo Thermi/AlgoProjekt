@@ -193,7 +193,7 @@ public class AlgoProjekt {
                 case "--number":
                     if (i < args.length - 1) {
                         try {
-                            reSeed = Integer.parseInt(args[i+1]);
+                            amount = Integer.parseInt(args[i+1]);
 
                         } catch (NumberFormatException Ne) {
                             System.err.println("Using the --number option requires an integer after it!");
@@ -262,17 +262,18 @@ public class AlgoProjekt {
         }
         if (interactive) {
             /*
-             * TODO: User interactive entering of passwords until the user
+             * TODO:
+             * User interactive entering of passwords until the user
              * enters an escape sequence that should stop the program.
              */
         } else {
-            /*
+            /* TODO:
              * use the password from the command line or ask for one (just one!)
              */
         }
-        
-        /*
-         * More needs to be
+
+        /* TODO:
+         * More code (?)
          */
         return 0;
     }
