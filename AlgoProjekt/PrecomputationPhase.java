@@ -24,50 +24,16 @@ import java.security.SecureRandom;
  */
 public class PrecomputationPhase {
 
-    private Random gen = new Random();
-    private SecureRandom secgen = new SecureRandom();
-    private int reSeedThreshold;
-    private int counter;
-
-    public PrecomputationPhase() {
-        reSeedThreshold = 150;
-        byte[] buf;
-        ByteBuffer bb;
-        /* Generate a seed */
-        buf = secgen.generateSeed(8);
-
-        /* Wrap the seed, so we can get it's long value */
-        bb = ByteBuffer.wrap(buf);
-
-        /* Set the seed of the PRNG */
-        this.gen.setSeed(bb.getLong());
-    }
-
-    /**
-     * This constructor sets the rekeythreshold to the given value.
-     */
-    public PrecomputationPhase(int threshold) {
-        reSeedThreshold = threshold;
-        byte[] buf;
-        ByteBuffer bb;
-        /* Generate a seed */
-        buf = secgen.generateSeed(8);
-
-        /* Wrap the seed, so we can get it's long value */
-        bb = ByteBuffer.wrap(buf);
-
-        /* Set the seed of the PRNG */
-        this.gen.setSeed(bb.getLong());
-    }
-
+    Random gen = new Random();
+    SecureRandom secgen = new SecureRandom();
+    int reSeedThreshold, counter;
     /**
      * This constructor seeds the PRNG with the given value.
      */
-    public PrecomputationPhase(long seed) {
-        /* Set the seed of the PRNG */
-        this.gen.setSeed(seed);
+    public PrecomputationPhase(int threshold) {
+        this.reSeedThreshold = threshold;
+        counter = 0;
     }
-
     /**
      * This method reseeds the PRNG in the object a value from the RNG.
      */
@@ -95,9 +61,6 @@ public class PrecomputationPhase {
      *
      */
     public String generatePassword() {
-        /* We still need a
-         *
-         */
         StringBuilder password = new StringBuilder();
         String legalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno"
                 + "pqrstuvwxyz1234567890!§$%&/()=?`'+*#-.:,;";
@@ -138,7 +101,7 @@ public class PrecomputationPhase {
             /*
              * Reseed when the threshold is reached.
              */
-            if (reSeedThreshold == counter) {
+            if (reSeedThreshold > 0 && reSeedThreshold == counter) {
                 reSeed();
                 counter = 0;
             }
@@ -172,7 +135,7 @@ public class PrecomputationPhase {
             /*
              * Reseed when the threshold is reached.
              */
-            if (reSeedThreshold == counter) {
+            if ( reSeedThreshold > 0 && reSeedThreshold == counter) {
                 reSeed();
                 counter = 0;
             }
@@ -194,12 +157,29 @@ public class PrecomputationPhase {
      * This will generate a password of the given length and consisting of the
      * characters in the given string.
      */
-    public static String generatePassword(String characters, int length) {
-        Random r = new Random();
+    public String generatePassword_1(String characters, int length) {
+        char[] text = new char[length];
+        for (int i = 0; i < length; i++) {
+            if(reSeedThreshold > 0 && counter == reSeedThreshold) {
+                this.reSeed();
+                counter = 0;
+            }
+            text[i] = characters.charAt(gen.nextInt(characters.length()));
+            counter++;
+        }
+        return new String(text);
+    }
+
+    /**
+     * This function generates a password consisting of the given characters 
+     * and of the given length.
+     * <P> It does no reSeeding. Implemented on behalf of Maria.
+    */
+    public  String generatePassword_2(String characters, int length) {
         char[] text = new char[length];
 
         for (int i = 0; i < length; i++) {
-            text[i] = characters.charAt(r.nextInt(characters.length()));
+            text[i] = characters.charAt(gen.nextInt(characters.length()));
         }
         return new String(text);
     }
