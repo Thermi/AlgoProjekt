@@ -41,7 +41,7 @@ public class OnlinePhase {
         try {
             md = MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
-            System.err.println("Sorrby, Java doesn't know that algorithm: " + algorithm);
+            System.err.println("Sorry, Java doesn't know that algorithm: " + algorithm);
             e.printStackTrace();
             return;
         }
