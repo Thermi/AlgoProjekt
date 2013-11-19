@@ -61,6 +61,7 @@ public class AlgoProjekt {
         String legalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno"
                 + "pqrstuvwxyz1234567890!§$%&/()=?`'+*#-.:,;"; /* String for -c argument */
         String password = null;
+        long time1, time2; /* Two longs for time measurement. */
         /*
          * Using underscores is allowed in Java. You can format numbers into
          * easily readable strings.
@@ -258,7 +259,10 @@ public class AlgoProjekt {
              * Measure the time it takes to generate the entries and store them,
              * if storeTablePath is not null and validated.
              */
+            time1 = System.currentTimeMillis();
             table = phase.makeTable(amount, legalChars);
+            time2 = System.currentTimeMillis();
+            System.out.println("Generating the hash table entries took " + ((time1+time2)/2) + "seconds");
         }
         if (interactive) {
             /*
