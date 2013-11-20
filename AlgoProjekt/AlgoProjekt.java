@@ -53,19 +53,28 @@ public class AlgoProjekt {
          * Parameter handling
          */
         int length = 4; /* length for -l argument */
-        int reSeed = 150;
+
+        int reSeed = 150000;
         boolean generateOnly = false; /* boolean for -g argument */
+
         boolean interactive = false; /* boolean for -i argument*/
+
+        boolean abort = false; /* boolean for interactive mode user control */
+
         String loadTablePath = null; /* Path for -f argument */
+
         String storeTablePath = null; /* Path for -o argument */
+
         String legalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno"
                 + "pqrstuvwxyz1234567890!§$%&/()=?`'+*#-.:,;"; /* String for -c argument */
+
         String password = null;
         long time1, time2; /* Two longs for time measurement. */
         /*
          * Using underscores is allowed in Java. You can format numbers into
          * easily readable strings.
          */
+
         int amount = 300_000;
         int i;
         /* Look at all the parameters and */
@@ -126,7 +135,7 @@ public class AlgoProjekt {
                     break;
                 case "-c":
                     if (i < args.length - 1) {
-                        legalChars = args[i+1];
+                        legalChars = args[i + 1];
                     } else {
                         System.err.println("Using the -c option requires a string after it!");
                         return 1;
@@ -134,7 +143,7 @@ public class AlgoProjekt {
                     break;
                 case "--characters":
                     if (i < args.length - 1) {
-                        legalChars = args[i+1];
+                        legalChars = args[i + 1];
                     } else {
                         System.err.println("Using the --characters option requires a string after it!");
                         return 1;
@@ -149,7 +158,7 @@ public class AlgoProjekt {
                 case "-r":
                     if (i < args.length - 1) {
                         try {
-                            reSeed = Integer.parseInt(args[i+1]);
+                            reSeed = Integer.parseInt(args[i + 1]);
 
                         } catch (NumberFormatException Ne) {
                             System.err.println("Using the -r option requires an integer after it!");
@@ -164,7 +173,7 @@ public class AlgoProjekt {
                 case "--reseed":
                     if (i < args.length - 1) {
                         try {
-                            reSeed = Integer.parseInt(args[i+1]);
+                            reSeed = Integer.parseInt(args[i + 1]);
 
                         } catch (NumberFormatException Ne) {
                             System.err.println("Using the --reseed option requires an integer after it!");
@@ -179,7 +188,7 @@ public class AlgoProjekt {
                 case "-n":
                     if (i < args.length - 1) {
                         try {
-                            amount = Integer.parseInt(args[i+1]);
+                            amount = Integer.parseInt(args[i + 1]);
 
                         } catch (NumberFormatException Ne) {
                             System.err.println("Using the -n option requires an integer after it!");
@@ -194,7 +203,7 @@ public class AlgoProjekt {
                 case "--number":
                     if (i < args.length - 1) {
                         try {
-                            amount = Integer.parseInt(args[i+1]);
+                            amount = Integer.parseInt(args[i + 1]);
 
                         } catch (NumberFormatException Ne) {
                             System.err.println("Using the --number option requires an integer after it!");
@@ -214,7 +223,7 @@ public class AlgoProjekt {
                     break;
                 case "-p":
                     if (i < args.length - 1) {
-                        password = args[i+1];
+                        password = args[i + 1];
                     } else {
                         System.err.println("Using the -p option requires a string after it!");
                         return 1;
@@ -222,12 +231,13 @@ public class AlgoProjekt {
                     break;
                 case "--password":
                     if (i < args.length - 1) {
-                        password = args[i+1];
+                        password = args[i + 1];
                     } else {
                         System.err.println("Using the --password option requires a string after it!");
                         return 1;
                     }
                     break;
+
             }
         }
         /* we create a hashtable which uses the hash of the password as the key
@@ -236,7 +246,11 @@ public class AlgoProjekt {
         Hashtable<byte[], String> table;
 
         if (generateOnly) {
+            time1 = System.currentTimeMillis();
             table = phase.makeTable(amount, legalChars);
+            time2 = System.currentTimeMillis();
+            System.out.println("Generating the hash table entries took " + ((time1 + time2) / 2) + "seconds");
+
             /*
              * TODO:
              * Write the hashtable to a file, then stop the program.
@@ -262,9 +276,23 @@ public class AlgoProjekt {
             time1 = System.currentTimeMillis();
             table = phase.makeTable(amount, legalChars);
             time2 = System.currentTimeMillis();
-            System.out.println("Generating the hash table entries took " + ((time1+time2)/2) + "seconds");
+            System.out.println("Generating the hash table entries took " + ((time1 + time2) / 2) + "seconds");
         }
         if (interactive) {
+
+            /* Available options here:
+             * 1 - Create a new hash table
+             * 2 - Load a hash table
+             * Stuff below here is only available, if a hash table is loaded
+             * 3 - save a hash table (if one was generated)
+             * 4 - enter a password and look it up in the hash table
+             * 5 - generate a password and look it up in the hash table
+             * This is always available:
+             * 6 - quit
+            */
+            while(!abort) {
+                System.out.println("");
+            }
             /*
              * TODO:
              * User interactive entering of passwords until the user
