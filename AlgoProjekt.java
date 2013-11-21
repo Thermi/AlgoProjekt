@@ -246,7 +246,7 @@ public class AlgoProjekt {
 
         if (generateOnly) {
             time1 = System.currentTimeMillis();
-            table = phase.makeTable(amount, legalChars);
+            table = phase.makeTable(amount, legalChars, length);
             time2 = System.currentTimeMillis();
             System.out.println("Generating the hash table entries took " + (time1 - time2) + "seconds");
 
@@ -273,7 +273,7 @@ public class AlgoProjekt {
              * if storeTablePath is not null and validated.
              */
             time1 = System.currentTimeMillis();
-            table = phase.makeTable(amount, legalChars);
+            table = phase.makeTable(amount, legalChars, length);
             time2 = System.currentTimeMillis();
             System.out.println("Generating the hash table entries took " + ((time1 + time2) / 2) + "seconds");
         }
