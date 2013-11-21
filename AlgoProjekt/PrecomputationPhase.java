@@ -289,10 +289,10 @@ public class PrecomputationPhase {
      * @return A hash table with "amount" entries that consist of passwords that
      * are made up of the given characters.
      */
-    public Hashtable makeTable(int amount, String legalChars) {
+    public Hashtable <byte[], String> makeTable(int amount, String legalChars) {
         int i;
         String password;
-        Hashtable table = new Hashtable<byte[], String>();
+        Hashtable <byte[], String> table = new Hashtable <byte[], String>();
         for (i = 0; i < amount; i++) {
             password = generatePassword(legalChars);
             table.put(makeDigest(password, "SHA-1"), password);
