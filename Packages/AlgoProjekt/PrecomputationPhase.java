@@ -31,9 +31,8 @@ public class PrecomputationPhase {
 
     /**
      * This constructor sets the threshold.
-     *
-     * @param threshold The threshold specifies when the class should reSeed
-     * itself. When it is 0, it disables reSeeding.
+     * @param threshold The threshold specifies when the class should reSeed itself.
+     * When it is 0, it disables reSeeding.
      */
     public PrecomputationPhase(int threshold) {
         this.reSeedThreshold = threshold;
@@ -59,8 +58,8 @@ public class PrecomputationPhase {
     /**
      * This method sets the reSeedThreshold to the given value.
      *
-     * @param treshold The threshold specifies when the class should reSeed
-     * itself. When it is 0, it disables reSeeding.
+     * @param treshold The threshold specifies when the class should reSeed itself.
+     * When it is 0, it disables reSeeding.
      */
     public void setReSeedThreshold(int treshold) {
         this.reSeedThreshold = treshold;
@@ -68,22 +67,18 @@ public class PrecomputationPhase {
 
     /**
      * This method returns the set threshold.
-     *
      * @return Returns the threshold of this object.
-     */
+    */
     public int getReSeedThreshold() {
         return this.reSeedThreshold;
     }
 
+
     /**
      * This will generate a password of the given length and consisting of the
-     * characters in the given string.
-     * <P>
-     * In contrast to generatePassword_2, this method does reSeed, if
-     * reSeedthreshold ist > 0!
-     *
-     * @param characters an array of characters you want the passwords to be
-     * made up of.
+     * characters in the given string. <P> In contrast to generatePassword_2,
+     * this method does reSeed, if reSeedthreshold ist > 0!
+     * @param characters an array of characters you want the passwords to be made up of.
      * @param length The length of the password you want to generate.
      * @return A string of the given length made up of the given characters.
      */
@@ -105,9 +100,7 @@ public class PrecomputationPhase {
      * of the given length.
      * <P>
      * It does no reSeeding. Implemented on behalf of Maria.
-     *
-     * @param characters A string made up of characters you want the password to
-     * be made up of.
+     * @param characters A string made up of characters you want the password to be made up of.
      * @param length The length of the password you want to generate.
      * @return A string of the given length made up of the given characters.
      */
@@ -121,13 +114,10 @@ public class PrecomputationPhase {
     }
 
     /**
-     * This method generates the digest of the given string using the given
-     * algorithm.
-     *
+     * This method generates the digest of the given string using the given algorithm.
      * @param passwd A string to make the digest of.
      * @param algorithm The algorithm you want to use.
-     * @return A hexadecimal presentation of the last 32 bit of the message
-     * digest
+     * @return A hexadecimal presentation of the last 32 bit of the message digest
      */
     public static String makeDigest(String passwd, String algorithm) {
         byte digest[];
@@ -164,28 +154,20 @@ public class PrecomputationPhase {
     /**
      * This method will generate a hashtable that maps byte arrays to strings
      * and fill it with the given amount of digest - password pairs.
-     *
-     * @param amount This is the amount of entries you want to have in the
-     * table.
-     * @param legalChars This is a string consisting of the characters you want
-     * the passwords to consist of.
+     * @param amount This is the amount of entries you want to have in the table.
+     * @param legalChars This is a string consisting of the characters you want the passwords
+     * to consist of.
      * @return A hash table with "amount" entries that consist of passwords that
      * are made up of the given characters.
      */
-    public Hashtable<String, String> makeTable(int amount, String legalChars, int length) {
+    public Hashtable <String, String> makeTable(int amount, String legalChars, int length) {
         int i;
         String password;
-        float time1, time2;
-        Hashtable<String, String> table = new Hashtable<String, String>(amount,95);
-        System.out.println("Generating " + amount + " hash table entries ...");
-        time1 = System.currentTimeMillis();
+        Hashtable <String, String> table = new Hashtable <String, String>();
         for (i = 0; i < amount; i++) {
             password = generatePassword_1(legalChars, length);
             table.put(makeDigest(password, "SHA-1"), password);
         }
-        time2 = System.currentTimeMillis();
-        System.out.println("Generating the hash table entries took " + (time2 - time1) + " ms.");
-        System.out.println("The table now holds " + table.size() + " entries.");
         return table;
     }
 }
