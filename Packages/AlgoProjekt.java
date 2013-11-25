@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -66,6 +67,8 @@ public class AlgoProjekt {
         /*
          * Parameter handling.
          */
+        Scanner scanner = new Scanner(System.in);
+
         int length = 4; /* length for -l argument */
 
         int reSeed = 150000;
@@ -100,35 +103,60 @@ public class AlgoProjekt {
                     printHelpMessage();
                     return;
                 case "-f":
-                    // Table einlesen
-                    //
-                    /*
-                     * TODO:
-                     * Validate the path and load the hash table from the file.
-                     */
-                    break;
                 case "--file":
-                    // Table einlesen
-                    /*
-                     * TODO:
-                     * Validate the path and load the hash table from the file.
-                     */
-                    break;
-                case "-o":
-                    storeTablePath = args[i + 1];
-                    /* i+s+;
-                     /*
-                     * TODO:
-                     * Store the hash table in the file.
-                     */
+                    System.out.print("Please enter a path: ");
+                    String p1 = scanner.nextLine();
+
+                    p1 = p1 + ("test.srs");
+
+                    System.out.println("Please wait while the file is created.");
+                    FileOutputStream f_out = null;
+                    try {
+                        f_out = new FileOutputStream(p1);
+                    } catch (FileNotFoundException e) {
+
+                    }
+                    ObjectOutputStream obj_out = null;
+                    try {
+                        obj_out = new ObjectOutputStream(f_out);
+                    } catch (IOException | NullPointerException e) {
+                        System.out.println(" ");
+                    }
+                    try {
+                        int table = 0;
+                        obj_out.writeObject(table);
+                        System.out.println("You have successfully createt the file: " + p1);
+                    } catch (IOException | NullPointerException e) {
+                        System.out.println("You have an invorrect path specified");
+                    }
                     break;
                 case "--output":
-                    // Pfadangabe validieren und in storeTablePath schreiben
-                    /*
-                     * TODO:
-                     * Store the hash table in the file.
-                     */
+                case "-o":
+                    storeTablePath = args[i + 1];
+                     System.out.println("Please enter the path of your hashtable file: ");
+                        String p2 = scanner.nextLine();
+
+                        FileInputStream f_in = null;
+                        try {
+                            f_in = new FileInputStream(p2);
+                        } catch (FileNotFoundException ex) {
+                           
+                        }
+                        ObjectInputStream obj_in = null;
+                        try {
+                            obj_in = new ObjectInputStream(f_in);
+                        } catch (IOException ex) {
+                          
+                        }
+                        try {
+                Hashtable table = (Hashtable) obj_in.readObject();
+                            System.out.println("You have successfully load the file: " + p2);
+                        } catch (IOException | ClassNotFoundException ex) {
+                          
+                        }
                     break;
+                    
+                    
                 case "-l":
                     if (i < args.length - 1) {
                         try {
@@ -337,7 +365,7 @@ public class AlgoProjekt {
                     );
                     /* A loop to check the user input, so the user can't enter any non-integer numbers.
                      */
-                    while (!isInteger || value == 0) {
+                    while (wrong_option || !isInteger || value == 0) {
                         /* We try to read a line from the buffered reader.
                          */
                         try {
@@ -379,25 +407,44 @@ public class AlgoProjekt {
                 }
                 switch (value) {
                     case 1:
+                        table = null;
                         table = phase.makeTable(amount, legalChars, length);
                         break;
                     case 2:
-                        /*
-                         * TODO:
-                         * Do stuff to deserialize and load a hash table
-                         * and measure the time it took to do it.
-                         */
-                        // Deserialize einfügen
-                        break;
-                    case 3:
-                        Scanner scanner = new Scanner(System.in);
-                        System.out.print("Bitte geben Sie einen Pfad ein: ");
-                        String p1 = scanner.nextLine();
-                        int durchlauf = 0;
-                        p1 = p1 + ("test" + durchlauf + ".srs");
-                        durchlauf++;
-                        //Pfad wird vom User eingegeben, Dateiname zählt für jeden versuch hoch ->Variable: durchlauf
+                        System.out.println("Please enter the path of your hashtable file: ");
+                        String p2 = scanner.nextLine();
 
+                        FileInputStream f_in = null;
+                        try {
+                            f_in = new FileInputStream(p2);
+                        } catch (FileNotFoundException ex) {
+                           
+                        }
+                        ObjectInputStream obj_in = null;
+                        try {
+                            obj_in = new ObjectInputStream(f_in);
+                        } catch (IOException ex) {
+                          
+                        }
+                        try {
+                            table = (Hashtable) obj_in.readObject();
+                            System.out.println("You have successfully load the file: " + p2);
+                        } catch (IOException | ClassNotFoundException ex) {
+                          
+                        }
+
+                 
+                      
+                     break;
+                        
+                    
+                    case 3:
+                        System.out.print("Please enter a path: ");
+                        String p1 = scanner.nextLine();
+                        p1 = p1 + ("hashtable.srs");
+                        //Pfad wird vom User eingegeben
+
+                        System.out.println("Please wait while the file is created.");
                         FileOutputStream f_out = null;
                         try {
                             f_out = new FileOutputStream(p1);
@@ -407,26 +454,17 @@ public class AlgoProjekt {
                         ObjectOutputStream obj_out = null;
                         try {
                             obj_out = new ObjectOutputStream(f_out);
-                        } catch (IOException e) {
-
-                        } catch (NullPointerException e) {
+                        } catch (IOException | NullPointerException e) {
+                            System.out.println(" ");
                         }
                         try {
                             obj_out.writeObject(table);
-                            System.out.println("Sie haben erfolgreich die Datei: " + p1 + " erstellt :)");
-                        } catch (IOException e) {
-
-                            e.printStackTrace();
-                        } catch (NullPointerException e) {
-                            System.out.println("Tut mir leid, Sie haben einen falschen Pfad angeben.");
+                            System.out.println("You have successfully createt the file: " + p1);
+                        } catch (IOException | NullPointerException e) {
+                            System.out.println("You have an incorrect path specified");
                         }
                         //Schreibt das Aray in eine Datei
-                        /*
-                         * TODO:
-                         * DO stuff to serialize a hashtable and write it to a file.
-                         * Edit: kann die Funktion nicht teste, hat aber in einem Test Beispiel bei mir funktioniert
-                         * sollte das Table Array in die "hasthtable.ser" datei im wurzel verzeichnisch schreiben
-                         */
+
                         break;
                     case 4:
                         OnlinePhase.testRainbowTable(table);
