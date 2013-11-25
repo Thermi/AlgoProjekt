@@ -1,15 +1,15 @@
 TODO:
 
-- Serialization - ruben
-- Programmkurzbeschreibung - ruben
-- Programmkenndaten - nöl
-- Zuständigkeiten
+- Serialization - ruben?
+- Programmkurzbeschreibung - ruben?
+- Programmkenndaten - nöl?
+- Zuständigkeiten - zusammen
 
 - Aufgabenstellung - maria
-- Theoretische Grundlagen - nöl
+- Theoretische Grundlagen - ruben?
 - Funktionshirachie - maria
 
-- Methoden/Algorithmen
+- Methoden/Algorithmen - nöl?
   Exakte Beschreibung der Lösungsverfahren mit
   Anwendungsgrenzen (Wie wird die Aufgabe
   gelöst?). Beschreibung von Plausibilitätskontrollen.
@@ -19,19 +19,18 @@ TODO:
   duren, Moduln, Klassen, Methoden, Ereignisse,
   Regeln, globalen Variablen und Konstanten.
   
-- Fehlerbehandlung
+- Fehlerbehandlung -nöl?
   Angabe der vorgesehenen Fehlermeldungen und
   der daraus resultierenden Maßnahmen.
 
-- Programmstruktur
+- Programmstruktur - maria
   Struktur übersicht mit Schnittstellendarstellung,
   z. B. grafisch als Aufrufhierarchie oder Jackson-
   Diagramm bzw. Klassenhierarchie.
 
-- Programmablaufbeschreibung - nöl
+- Programmablaufbeschreibung - nöl?
   Darstellung des internen Programmablaufs mit
-  Querverweisen auf den Quelltext 
-- Funktionshirachie -maria
+  Querverweisen auf den Quelltext
   
 - Programmtest - zusammen
 - Testziele - zusammen:
