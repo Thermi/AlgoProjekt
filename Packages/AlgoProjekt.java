@@ -1,4 +1,3 @@
-
 /**
  *
  * @author thermi
@@ -377,9 +376,14 @@ public class AlgoProjekt {
                          */
                         break;
                     case 3:
+                        FileOutputStream f_out = new FileOutputStream("hashtable.ser");
+                        ObjectOutputStream obj_out = new ObjectOutputStream (f_out);
+                        obj_out.writeObject (table);
                         /*
                          * TODO:
                          * DO stuff to serialize a hashtable and write it to a file.
+                         * Edit: kann die Funktion nicht teste, hat aber in einem Test Beispiel bei mir funktioniert
+                         * sollte das Table Array in die "hasthtable.ser" datei im wurzel verzeichnisch schreiben
                          */
                         break;
                     case 4:
