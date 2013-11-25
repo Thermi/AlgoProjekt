@@ -1,4 +1,46 @@
 TODO:
 
--Documentation
--Serialization
+- Serialization - ruben
+- Programmkurzbeschreibung - ruben
+- Programmkenndaten - nöl
+- Zuständigkeiten
+
+- Aufgabenstellung - maria
+- Theoretische Grundlagen - nöl
+- Funktionshirachie - maria
+
+- Methoden/Algorithmen
+  Exakte Beschreibung der Lösungsverfahren mit
+  Anwendungsgrenzen (Wie wird die Aufgabe
+  gelöst?). Beschreibung von Plausibilitätskontrollen.
+
+- Programmbausteine -maria: pre, nöl: ?, ruben. ?
+  Komplette Liste aller Unterprogramme, Proze-
+  duren, Moduln, Klassen, Methoden, Ereignisse,
+  Regeln, globalen Variablen und Konstanten.
+  
+- Fehlerbehandlung
+  Angabe der vorgesehenen Fehlermeldungen und
+  der daraus resultierenden Maßnahmen.
+
+- Programmstruktur
+  Struktur übersicht mit Schnittstellendarstellung,
+  z. B. grafisch als Aufrufhierarchie oder Jackson-
+  Diagramm bzw. Klassenhierarchie.
+
+- Programmablaufbeschreibung - nöl
+  Darstellung des internen Programmablaufs mit
+  Querverweisen auf den Quelltext 
+- Funktionshirachie -maria
+  
+- Programmtest - zusammen
+- Testziele - zusammen:
+  Durchführung von z. B. Modultest, Akzeptanztest.
+
+- Testverfahren - zusammen
+  Beschreibung der verwendeten Testmethoden
+  und Testwerkzeuge (Testprogramme, Testumgebung).
+
+- Testfälle/Testresultate - zusammen
+  Angabe der Testdaten, der erwarteten und erzielten Testergebnisse. 
+
