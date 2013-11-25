@@ -2,24 +2,24 @@ TODO:
 
 - Serialization - ruben?
 - Programmkurzbeschreibung - ruben?
-- Programmkenndaten - nöl?
+- Programmkenndaten - Noel!
 - Zuständigkeiten - zusammen
 
 - Aufgabenstellung - maria
 - Theoretische Grundlagen - ruben?
 - Funktionshirachie - maria
 
-- Methoden/Algorithmen - nöl?
+- Methoden/Algorithmen - Noel
   Exakte Beschreibung der Lösungsverfahren mit
   Anwendungsgrenzen (Wie wird die Aufgabe
   gelöst?). Beschreibung von Plausibilitätskontrollen.
 
-- Programmbausteine -maria: pre, nöl: ?, ruben. ?
+- Programmbausteine -maria: pre, Noel: Main, ruben. ?
   Komplette Liste aller Unterprogramme, Proze-
   duren, Moduln, Klassen, Methoden, Ereignisse,
   Regeln, globalen Variablen und Konstanten.
-  
-- Fehlerbehandlung -nöl?
+
+- Fehlerbehandlung Noel
   Angabe der vorgesehenen Fehlermeldungen und
   der daraus resultierenden Maßnahmen.
 
@@ -28,10 +28,10 @@ TODO:
   z. B. grafisch als Aufrufhierarchie oder Jackson-
   Diagramm bzw. Klassenhierarchie.
 
-- Programmablaufbeschreibung - nöl?
+- Programmablaufbeschreibung - Noel!
   Darstellung des internen Programmablaufs mit
   Querverweisen auf den Quelltext
-  
+
 - Programmtest - zusammen
 - Testziele - zusammen:
   Durchführung von z. B. Modultest, Akzeptanztest.
@@ -41,5 +41,5 @@ TODO:
   und Testwerkzeuge (Testprogramme, Testumgebung).
 
 - Testfälle/Testresultate - zusammen
-  Angabe der Testdaten, der erwarteten und erzielten Testergebnisse. 
+  Angabe der Testdaten, der erwarteten und erzielten Testergebnisse.
 
