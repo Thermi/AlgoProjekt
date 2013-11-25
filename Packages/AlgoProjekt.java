@@ -1,3 +1,4 @@
+
 /**
  *
  * @author thermi
@@ -13,8 +14,14 @@ import static AlgoProjekt.OnlinePhase.testHashtable;
 import static AlgoProjekt.OnlinePhase.testHashtableOnce;
 import static AlgoProjekt.PrecomputationPhase.makeDigest;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AlgoProjekt {
 
@@ -93,24 +100,30 @@ public class AlgoProjekt {
                     printHelpMessage();
                     return;
                 case "-f":
+                    // Table einlesen
+                    //
                     /*
                      * TODO:
                      * Validate the path and load the hash table from the file.
                      */
                     break;
                 case "--file":
+                    // Table einlesen
                     /*
                      * TODO:
                      * Validate the path and load the hash table from the file.
                      */
                     break;
                 case "-o":
-                    /*
+                    storeTablePath = args[i + 1];
+                    /* i+s+;
+                     /*
                      * TODO:
                      * Store the hash table in the file.
                      */
                     break;
                 case "--output":
+                    // Pfadangabe validieren und in storeTablePath schreiben
                     /*
                      * TODO:
                      * Store the hash table in the file.
@@ -374,11 +387,40 @@ public class AlgoProjekt {
                          * Do stuff to deserialize and load a hash table
                          * and measure the time it took to do it.
                          */
+                        // Deserialize einfügen
                         break;
                     case 3:
-                        FileOutputStream f_out = new FileOutputStream("hashtable.ser");
-                        ObjectOutputStream obj_out = new ObjectOutputStream (f_out);
-                        obj_out.writeObject (table);
+                        Scanner scanner = new Scanner(System.in);
+                        System.out.print("Bitte geben Sie einen Pfad ein: ");
+                        String p1 = scanner.nextLine();
+                        int durchlauf = 0;
+                        p1 = p1 + ("test" + durchlauf + ".srs");
+                        durchlauf++;
+                        //Pfad wird vom User eingegeben, Dateiname zählt für jeden versuch hoch ->Variable: durchlauf
+
+                        FileOutputStream f_out = null;
+                        try {
+                            f_out = new FileOutputStream(p1);
+                        } catch (FileNotFoundException e) {
+
+                        }
+                        ObjectOutputStream obj_out = null;
+                        try {
+                            obj_out = new ObjectOutputStream(f_out);
+                        } catch (IOException e) {
+
+                        } catch (NullPointerException e) {
+                        }
+                        try {
+                            obj_out.writeObject(table);
+                            System.out.println("Sie haben erfolgreich die Datei: " + p1 + " erstellt :)");
+                        } catch (IOException e) {
+
+                            e.printStackTrace();
+                        } catch (NullPointerException e) {
+                            System.out.println("Tut mir leid, Sie haben einen falschen Pfad angeben.");
+                        }
+                        //Schreibt das Aray in eine Datei
                         /*
                          * TODO:
                          * DO stuff to serialize a hashtable and write it to a file.
@@ -457,7 +499,6 @@ public class AlgoProjekt {
             }
         }
     }
-
 
     /**
      * This method prints the help message.
