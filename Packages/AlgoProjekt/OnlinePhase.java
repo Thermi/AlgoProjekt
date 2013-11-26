@@ -9,8 +9,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Hashtable;
 import static AlgoProjekt.PrecomputationPhase.makeDigest;
 import java.io.FileNotFoundException;
