@@ -103,11 +103,10 @@ public class AlgoProjekt {
                     printHelpMessage();
                     return;
                 case "-f":
-                case "--file":
                     System.out.print("Please enter a path: ");
                     String p1 = scanner.nextLine();
 
-                    p1 = p1 + ("test.srs");
+                    p1 = p1 + ("hashtable.srs");
 
                     System.out.println("Please wait while the file is created.");
                     FileOutputStream f_out = null;
@@ -127,36 +126,87 @@ public class AlgoProjekt {
                         obj_out.writeObject(table);
                         System.out.println("You have successfully createt the file: " + p1);
                     } catch (IOException | NullPointerException e) {
-                        System.out.println("You have an invorrect path specified");
+                        System.out.println("You have an incorrect path specified");
+                    }
+                    break;
+
+                case "--file":
+                    System.out.print("Please enter a path: ");
+                    String p3 = scanner.nextLine();
+
+                    p3 = p3 + ("hashtable.srs");
+
+                    System.out.println("Please wait while the file is created.");
+                    FileOutputStream f_out_1 = null;
+                    try {
+                        f_out = new FileOutputStream(p3);
+                    } catch (FileNotFoundException e) {
+
+                    }
+                    ObjectOutputStream obj_out_1 = null;
+                    try {
+                        obj_out = new ObjectOutputStream(f_out_1);
+                    } catch (IOException | NullPointerException e) {
+                        System.out.println(" ");
+                    }
+                    try {
+                        int table = 0;
+                        obj_out_1.writeObject(table);
+                        System.out.println("You have successfully createt the file: " + p3);
+                    } catch (IOException | NullPointerException e) {
+                        System.out.println("You have an incorrect path specified");
                     }
                     break;
                 case "--output":
+                    storeTablePath = args[i + 1];
+                    System.out.println("Please enter the path of your hashtable file: ");
+                    String p2 = scanner.nextLine();
+
+                    FileInputStream f_in = null;
+                    try {
+                        f_in = new FileInputStream(p2);
+                    } catch (FileNotFoundException ex) {
+
+                    }
+                    ObjectInputStream obj_in = null;
+                    try {
+                        obj_in = new ObjectInputStream(f_in);
+                    } catch (IOException ex) {
+
+                    }
+                    try {
+                        Hashtable table = (Hashtable) obj_in.readObject();
+                        System.out.println("You have successfully load the file: " + p2);
+                    } catch (IOException | ClassNotFoundException ex) {
+
+                    }
+                    break;
+
                 case "-o":
                     storeTablePath = args[i + 1];
-                     System.out.println("Please enter the path of your hashtable file: ");
-                        String p2 = scanner.nextLine();
+                    System.out.println("Please enter the path of your hashtable file: ");
+                    String p4 = scanner.nextLine();
 
-                        FileInputStream f_in = null;
-                        try {
-                            f_in = new FileInputStream(p2);
-                        } catch (FileNotFoundException ex) {
-                           
-                        }
-                        ObjectInputStream obj_in = null;
-                        try {
-                            obj_in = new ObjectInputStream(f_in);
-                        } catch (IOException ex) {
-                          
-                        }
-                        try {
-                Hashtable table = (Hashtable) obj_in.readObject();
-                            System.out.println("You have successfully load the file: " + p2);
-                        } catch (IOException | ClassNotFoundException ex) {
-                          
-                        }
+                    FileInputStream f_in_1 = null;
+                    try {
+                        f_in = new FileInputStream(p4);
+                    } catch (FileNotFoundException ex) {
+
+                    }
+                    ObjectInputStream obj_in_1 = null;
+                    try {
+                        obj_in = new ObjectInputStream(f_in_1);
+                    } catch (IOException ex) {
+
+                    }
+                    try {
+                        Hashtable table = (Hashtable) obj_in_1.readObject();
+                        System.out.println("You have successfully load the file: " + p4);
+                    } catch (IOException | ClassNotFoundException ex) {
+
+                    }
                     break;
-                    
-                    
+
                 case "-l":
                     if (i < args.length - 1) {
                         try {
@@ -418,26 +468,23 @@ public class AlgoProjekt {
                         try {
                             f_in = new FileInputStream(p2);
                         } catch (FileNotFoundException ex) {
-                           
+
                         }
                         ObjectInputStream obj_in = null;
                         try {
                             obj_in = new ObjectInputStream(f_in);
                         } catch (IOException ex) {
-                          
+
                         }
                         try {
                             table = (Hashtable) obj_in.readObject();
                             System.out.println("You have successfully load the file: " + p2);
                         } catch (IOException | ClassNotFoundException ex) {
-                          
+
                         }
 
-                 
-                      
-                     break;
-                        
-                    
+                        break;
+
                     case 3:
                         System.out.print("Please enter a path: ");
                         String p1 = scanner.nextLine();
