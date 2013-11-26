@@ -5,26 +5,16 @@
  */
 import java.util.Hashtable;
 import java.lang.String;
-import java.security.MessageDigest;
-import java.io.FileDescriptor;
 import java.io.File;
-import java.io.FileInputStream;
 import AlgoProjekt.*;
 import static AlgoProjekt.OnlinePhase.deserialize;
 import static AlgoProjekt.OnlinePhase.testHashtable;
 import static AlgoProjekt.OnlinePhase.testHashtableOnce;
-import static AlgoProjekt.PrecomputationPhase.makeDigest;
 import static AlgoProjekt.PrecomputationPhase.serialize;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class AlgoProjekt {
 
@@ -71,7 +61,7 @@ public class AlgoProjekt {
          */
         Scanner scanner = new Scanner(System.in);
 
-        int length = 4; /* length for -l argument */
+        int length = 6; /* length for -l argument */
 
         int reSeed = 150000;
 
