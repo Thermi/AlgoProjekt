@@ -13,13 +13,61 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Hashtable;
 import static AlgoProjekt.PrecomputationPhase.makeDigest;
+import java.io.FileNotFoundException;
 
 public class OnlinePhase {
 
     /* Load the rainbow table and print out the amount of hash entries.
      * To be implemented.
      */
-    public static void deserialize(String filename) {
+    public static Hashtable<String, String> deserialize(String filename) {
+        Hashtable<String, String> table = new Hashtable<String, String>();
+
+        System.out.println("Trying to load the hash table from \"" + filename + "\"...");
+        FileInputStream f_in = null;
+        try {
+            f_in = new FileInputStream(filename);
+        } catch (FileNotFoundException ex) {
+            System.out.println("The specified file to load doesn't doesn't exist!");
+        }
+        ObjectInputStream obj_in = null;
+        try {
+            obj_in = new ObjectInputStream(f_in);
+        } catch (IOException ex) {
+            System.out.println("Couldn't create the ObjectInputStream needed to load the OBject from the file!");
+            return null;
+        }
+        System.out.println("Loading ...");
+        /* We try to read the object from the file
+         */
+        try {
+            table = (Hashtable<String, String>) obj_in.readObject();
+        } catch (IOException IOex) {
+            System.out.println("Something bad happened while accessing the specified file!");
+            return null;
+        } catch (ClassNotFoundException CNF) {
+            System.out.println("The specified file to load doesn't contain an apropriate object!");
+            return null;
+        }
+
+        if (table != null) {
+            System.out.println("The file \"" + filename + "\" was successfully loaded.");
+        }
+        try {
+            obj_in.close();
+        } catch (IOException ex) {
+            System.out.println("Couldn't close the ObjectInputStream!");
+            System.out.println("Stacktrace:");
+            ex.printStackTrace();
+        }
+        try {
+            f_in.close();
+        } catch (IOException ex) {
+            System.out.println("Couldn't close the FileInputStream!");
+            System.out.println("Stacktrace:");
+            ex.printStackTrace();
+        }
+        return table;
     }
 
     /* This method takes a password from stdin, calculates the 32 bit digest
