@@ -5,10 +5,14 @@
 package AlgoProjekt;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.security.MessageDigest;
@@ -187,5 +191,40 @@ public class PrecomputationPhase {
         System.out.println("Generating the hash table entries took " + (time2 - time1) + " ms.");
         System.out.println("The table now holds " + table.size() + " entries.");
         return table;
+    }
+
+    public static void serialize(Hashtable<String, String> table, String path) {
+        System.out.println("Please wait while the file is being created.");
+        FileOutputStream f_out = null;
+        File file = new File(path);
+        try {
+            file.createNewFile();
+        } catch (IOException IOEx) {
+            System.out.println("Something bad happened!");
+            System.out.println("Stacktrace:");
+            IOEx.printStackTrace();
+        }
+        if (!file.canWrite()) {
+            System.out.println("Can't write to the file. Aborting.");
+        }
+        try {
+            f_out = new FileOutputStream(path);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found!");
+        }
+        ObjectOutputStream obj_out = null;
+        try {
+            obj_out = new ObjectOutputStream(f_out);
+        } catch (IOException | NullPointerException e) {
+            System.out.println("Something bad happened!");
+            System.out.println("Stacktrace:");
+            e.printStackTrace();
+        }
+        //Schreibt das Aray in eine Datei
+        try {
+            obj_out.writeObject(table);
+        } catch (IOException | NullPointerException e) {
+            System.out.println("Couldn't write the hash table to the file!");
+        }
     }
 }
