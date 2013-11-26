@@ -10,9 +10,11 @@ import java.io.FileDescriptor;
 import java.io.File;
 import java.io.FileInputStream;
 import AlgoProjekt.*;
+import static AlgoProjekt.OnlinePhase.deserialize;
 import static AlgoProjekt.OnlinePhase.testHashtable;
 import static AlgoProjekt.OnlinePhase.testHashtableOnce;
 import static AlgoProjekt.PrecomputationPhase.makeDigest;
+import static AlgoProjekt.PrecomputationPhase.serialize;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -82,7 +84,7 @@ public class AlgoProjekt {
         String storeTablePath = null; /* Path for -o argument */
 
         String legalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno"
-                + "pqrstuvwxyz1234567890!§$%&/()=?`'+*#-.:,;"; /* String for -c argument */
+                + "pqrstuvwxyz1234567890!§$%&/()=?`'+*#-.:,;\""; /* String for -c argument */
 
         String password = null;
         /*
@@ -99,111 +101,103 @@ public class AlgoProjekt {
                 case "-h":
                     printHelpMessage();
                     return;
+
                 case "--help":
                     printHelpMessage();
                     return;
+
                 case "-f":
-                    System.out.print("Please enter a path: ");
-                    String p1 = scanner.nextLine();
-
-                    p1 = p1 + ("hashtable.srs");
-
-                    System.out.println("Please wait while the file is created.");
-                    FileOutputStream f_out = null;
-                    try {
-                        f_out = new FileOutputStream(p1);
-                    } catch (FileNotFoundException e) {
-
-                    }
-                    ObjectOutputStream obj_out = null;
-                    try {
-                        obj_out = new ObjectOutputStream(f_out);
-                    } catch (IOException | NullPointerException e) {
-                        System.out.println(" ");
-                    }
-                    try {
-                        int table = 0;
-                        obj_out.writeObject(table);
-                        System.out.println("You have successfully createt the file: " + p1);
-                    } catch (IOException | NullPointerException e) {
-                        System.out.println("You have an incorrect path specified");
+                    if (i < args.length - 1) {
+                        String path = args[i + 1];
+                        File inputpathdescriptor = new File(path);
+                        if (!inputpathdescriptor.exists()) {
+                            System.out.println("The specified file for the -f option doesn't exist!");
+                            return;
+                        }
+                        if (!inputpathdescriptor.canRead()) {
+                            System.out.println("The specified file for the -f option can't be read!");
+                            return;
+                        }
+                        if (!inputpathdescriptor.isFile()) {
+                            System.out.println("The specified path doesn't point to a file!");
+                            return;
+                        }
+                        loadTablePath = path;
+                        i++;
+                    } else {
+                        System.out.println("Using the -f option requires a file after it!");
+                        return;
                     }
                     break;
 
                 case "--file":
-                    System.out.print("Please enter a path: ");
-                    String p3 = scanner.nextLine();
-
-                    p3 = p3 + ("hashtable.srs");
-
-                    System.out.println("Please wait while the file is created.");
-                    FileOutputStream f_out_1 = null;
-                    try {
-                        f_out = new FileOutputStream(p3);
-                    } catch (FileNotFoundException e) {
-
-                    }
-                    ObjectOutputStream obj_out_1 = null;
-                    try {
-                        obj_out = new ObjectOutputStream(f_out_1);
-                    } catch (IOException | NullPointerException e) {
-                        System.out.println(" ");
-                    }
-                    try {
-                        int table = 0;
-                        obj_out_1.writeObject(table);
-                        System.out.println("You have successfully createt the file: " + p3);
-                    } catch (IOException | NullPointerException e) {
-                        System.out.println("You have an incorrect path specified");
-                    }
-                    break;
-                case "--output":
-                    storeTablePath = args[i + 1];
-                    System.out.println("Please enter the path of your hashtable file: ");
-                    String p2 = scanner.nextLine();
-
-                    FileInputStream f_in = null;
-                    try {
-                        f_in = new FileInputStream(p2);
-                    } catch (FileNotFoundException ex) {
-
-                    }
-                    ObjectInputStream obj_in = null;
-                    try {
-                        obj_in = new ObjectInputStream(f_in);
-                    } catch (IOException ex) {
-
-                    }
-                    try {
-                        Hashtable table = (Hashtable) obj_in.readObject();
-                        System.out.println("You have successfully load the file: " + p2);
-                    } catch (IOException | ClassNotFoundException ex) {
-
+                    /* We check for file existence, read permissions and if the specified path is actually a file (Not a unix socket, folder,
+                     * symlink or some other soft of madness
+                     */
+                    if (i < args.length - 1) {
+                        String path = args[i + 1];
+                        File pathdescriptor = new File(path);
+                        if (!pathdescriptor.exists()) {
+                            System.out.println("The specified file for the --file option doesn't exist!");
+                            return;
+                        }
+                        if (!pathdescriptor.canRead()) {
+                            System.out.println("The specified file for the --file option can't be read!");
+                            return;
+                        }
+                        if (!pathdescriptor.isFile()) {
+                            System.out.println("The specified path doesn't point to a file!");
+                            return;
+                        }
+                        loadTablePath = path;
+                        i++;
+                    } else {
+                        System.out.println("Using the --file option requires a file after it!");
+                        return;
                     }
                     break;
 
                 case "-o":
-                    storeTablePath = args[i + 1];
-                    System.out.println("Please enter the path of your hashtable file: ");
-                    String p4 = scanner.nextLine();
-
-                    FileInputStream f_in_1 = null;
-                    try {
-                        f_in = new FileInputStream(p4);
-                    } catch (FileNotFoundException ex) {
-
+                    /* We can only check if the output file already exists, as more checks
+                     * would require us to actually write a file there. (We don't operate
+                     * on the file system, unless we can assure, that everything works okay.
+                     */
+                    if (i < args.length - 1) {
+                        String path = args[i + 1];
+                        /* Ruben told me to add ".ser" to the file. */
+                        File pathdescriptor = new File(path + ".ser");
+                        System.out.println("Saving in \"" + path + "\"");
+                        if (pathdescriptor.exists()) {
+                            System.out.println("The specified file for the -o option already exists!");
+                            return;
+                        }
+                        storeTablePath = path;
+                        i++;
+                    } else {
+                        System.out.println("Using the -o option requires a file after it!");
+                        return;
                     }
-                    ObjectInputStream obj_in_1 = null;
-                    try {
-                        obj_in = new ObjectInputStream(f_in_1);
-                    } catch (IOException ex) {
+                    break;
 
-                    }
-                    try {
-                        Hashtable table = (Hashtable) obj_in_1.readObject();
-                        System.out.println("You have successfully load the file: " + p4);
-                    } catch (IOException | ClassNotFoundException ex) {
-
+                case "--output":
+                    /* We can only check if the output file already exists, as more checks
+                     * would require us to actually write a file there. (We don't operate
+                     * on the file system, unless we can assure, that everything works okay.
+                     */
+                    if (i < args.length - 1) {
+                        String path = args[i + 1];
+                        /* Ruben told me to add ".ser" to the file. */
+                        File pathdescriptor = new File(path + ".ser");
+                        System.out.println("Saving in \"" + path + "\"");
+                        if (pathdescriptor.exists()) {
+                            System.out.println("The specified file for the --output option already exists!");
+                            return;
+                        }
+                        storeTablePath = path;
+                        i++;
+                    } else {
+                        System.out.println("Using the --output option requires a file after it!");
+                        return;
                     }
                     break;
 
@@ -221,6 +215,7 @@ public class AlgoProjekt {
                         return;
                     }
                     break;
+
                 case "--length":
                     if (i < args.length - 1) {
                         try {
@@ -238,6 +233,7 @@ public class AlgoProjekt {
                         return;
                     }
                     break;
+
                 case "-c":
                     if (i < args.length - 1) {
                         legalChars = args[i + 1];
@@ -247,6 +243,7 @@ public class AlgoProjekt {
                         return;
                     }
                     break;
+
                 case "--characters":
                     if (i < args.length - 1) {
                         legalChars = args[i + 1];
@@ -256,12 +253,15 @@ public class AlgoProjekt {
                         return;
                     }
                     break;
+
                 case "-g":
                     generateOnly = true;
                     break;
+
                 case "--generate":
                     generateOnly = true;
                     break;
+
                 case "-r":
                     if (i < args.length - 1) {
                         try {
@@ -279,6 +279,7 @@ public class AlgoProjekt {
                         return;
                     }
                     break;
+
                 case "--reseed":
                     if (i < args.length - 1) {
                         try {
@@ -296,6 +297,7 @@ public class AlgoProjekt {
                         return;
                     }
                     break;
+
                 case "-n":
                     if (i < args.length - 1) {
                         try {
@@ -313,6 +315,7 @@ public class AlgoProjekt {
                         return;
                     }
                     break;
+
                 case "--number":
                     if (i < args.length - 1) {
                         try {
@@ -330,12 +333,15 @@ public class AlgoProjekt {
                         return;
                     }
                     break;
+
                 case "-i":
                     interactive = true;
                     break;
+
                 case "--interactive":
                     interactive = true;
                     break;
+
                 case "-p":
                     if (i < args.length - 1) {
                         password = args[i + 1];
@@ -345,6 +351,7 @@ public class AlgoProjekt {
                         return;
                     }
                     break;
+
                 case "--password":
                     if (i < args.length - 1) {
                         password = args[i + 1];
@@ -354,6 +361,7 @@ public class AlgoProjekt {
                         return;
                     }
                     break;
+
                 default:
                     System.err.println("Option " + args[i] + " isn't known!");
                     return;
@@ -366,26 +374,23 @@ public class AlgoProjekt {
         Hashtable<String, String> table = null;
 
 
-        /*
-         * Do stuff when the path is set and valid.
-         * (Validation should be done in the switch case)
+        /* Load the hash table from the input file,
+         * if it is specified and validated.
          */
         if (loadTablePath != null && !loadTablePath.isEmpty()) {
-            /*
-             * TODO:
-             * Write code to load the hashtable from a file, measure the time
-             * (You can take that from Precomputationphase.makeTable())
-             * and display it in the terminal.
-             */
-        } else if (generateOnly) {
+            table = deserialize(loadTablePath);
+            if(table == null)
+                System.out.println("Couldn't load the hash table from \"" + loadTablePath + "\"!");
+
+        } else if (generateOnly && ( storeTablePath == null || storeTablePath.isEmpty())) {
             table = phase.makeTable(amount, legalChars, length);
         }
         if (interactive) {
 
             /* booleans for interactive mode user control */
-            boolean isInteger = false, wrong_option = true;
-
-            String option = null;
+            boolean isInteger = false, wrong_option = true, accepted = false ;
+            File pathdescriptor;
+            String option = null, path = null;
             int value;
             /* Available options here:
              * 1 - Create a new hash table.
@@ -461,56 +466,45 @@ public class AlgoProjekt {
                         table = phase.makeTable(amount, legalChars, length);
                         break;
                     case 2:
-                        System.out.println("Please enter the path of your hashtable file: ");
-                        String p2 = scanner.nextLine();
-
-                        FileInputStream f_in = null;
-                        try {
-                            f_in = new FileInputStream(p2);
-                        } catch (FileNotFoundException ex) {
+                        accepted = false;
+                        while (!accepted) {
+                            accepted = true;
+                            System.out.println("Please enter the path to the file: ");
+                            path = scanner.nextLine();
+                            pathdescriptor = new File(path);
+                            if (!pathdescriptor.exists()) {
+                                System.out.println("The specified file doesn't exist!");
+                                accepted = false;
+                            }
+                            if (!pathdescriptor.canRead()) {
+                                System.out.println("The specified file can't be read!");
+                                accepted = false;
+                            }
+                            if (!pathdescriptor.isFile()) {
+                                System.out.println("The specified path doesn't point to a file!");
+                                accepted = false;
+                            }
 
                         }
-                        ObjectInputStream obj_in = null;
-                        try {
-                            obj_in = new ObjectInputStream(f_in);
-                        } catch (IOException ex) {
-
-                        }
-                        try {
-                            table = (Hashtable) obj_in.readObject();
-                            System.out.println("You have successfully load the file: " + p2);
-                        } catch (IOException | ClassNotFoundException ex) {
-
-                        }
+                        table = deserialize(path);
 
                         break;
 
                     case 3:
-                        System.out.print("Please enter a path: ");
-                        String p1 = scanner.nextLine();
-                        p1 = p1 + ("hashtable.srs");
-                        //Pfad wird vom User eingegeben
-
-                        System.out.println("Please wait while the file is created.");
-                        FileOutputStream f_out = null;
-                        try {
-                            f_out = new FileOutputStream(p1);
-                        } catch (FileNotFoundException e) {
-
+                        /* Ruben told me to add ".ser" to the file. */
+                        while (!accepted) {
+                            accepted = true;
+                            System.out.print("Please enter a path: ");
+                            path = scanner.nextLine();
+                            path += ".ser";
+                            pathdescriptor = new File(path);
+                            System.out.println("Saving in \"" + path + "\"");
+                            if (pathdescriptor.exists()) {
+                                System.out.println("The specified file already exists");
+                                accepted = false;
+                            }
                         }
-                        ObjectOutputStream obj_out = null;
-                        try {
-                            obj_out = new ObjectOutputStream(f_out);
-                        } catch (IOException | NullPointerException e) {
-                            System.out.println(" ");
-                        }
-                        try {
-                            obj_out.writeObject(table);
-                            System.out.println("You have successfully createt the file: " + p1);
-                        } catch (IOException | NullPointerException e) {
-                            System.out.println("You have an incorrect path specified");
-                        }
-                        //Schreibt das Aray in eine Datei
+                        serialize(table, path);
 
                         break;
                     case 4:
@@ -536,11 +530,9 @@ public class AlgoProjekt {
         } else {
             if (generateOnly) {
                 table = phase.makeTable(amount, legalChars, length);
-
-                /*
-                 * TODO:
-                 * Write the hashtable to a file, then stop the program.
-                 */
+                if (storeTablePath != null || !storeTablePath.isEmpty()) {
+                    serialize(table, storeTablePath);
+                }
                 return;
             }
             /* If no table was generated yet, we need to generate one. */
