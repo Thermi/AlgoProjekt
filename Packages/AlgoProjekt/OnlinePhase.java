@@ -19,7 +19,7 @@ public class OnlinePhase {
      * To be implemented.
      */
     public static Hashtable<String, String> deserialize(String filename) {
-        Hashtable<String, String> table = new Hashtable<String, String>();
+        Hashtable<String, String> table;
 
         System.out.println("Trying to load the hash table from \"" + filename + "\"...");
         FileInputStream f_in = null;
@@ -32,7 +32,7 @@ public class OnlinePhase {
         try {
             obj_in = new ObjectInputStream(f_in);
         } catch (IOException ex) {
-            System.out.println("Couldn't create the ObjectInputStream needed to load the OBject from the file!");
+            System.out.println("Couldn't create the ObjectInputStream needed to load the Object from the file!");
             return null;
         }
         System.out.println("Loading ...");
