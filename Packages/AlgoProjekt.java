@@ -4,7 +4,6 @@
  * @author thermi
  */
 import java.util.Hashtable;
-import java.lang.String;
 import java.io.File;
 import AlgoProjekt.*;
 import static AlgoProjekt.OnlinePhase.deserialize;
@@ -15,6 +14,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AlgoProjekt {
 
@@ -59,7 +60,6 @@ public class AlgoProjekt {
         /*
          * Parameter handling.
          */
-        Scanner scanner = new Scanner(System.in);
 
         int length = 6; /* length for -l argument */
 
@@ -462,18 +462,25 @@ public class AlgoProjekt {
                         while (!accepted) {
                             accepted = true;
                             System.out.println("Please enter the path to the file: ");
-                            path = scanner.nextLine();
+                    try {
+                        path = br.readLine();
+                    } catch (IOException IOex) {
+                        System.err.println("Sorry, couldn't read the path from the terminal!\n");
+                        System.err.println("Stacktrace:");
+                        IOex.printStackTrace(System.err);
+                        return;
+                    }
                             pathdescriptor = new File(path);
                             if (!pathdescriptor.exists()) {
-                                System.out.println("The specified file doesn't exist!");
+                                System.err.println("The specified file doesn't exist!");
                                 accepted = false;
                             }
                             if (!pathdescriptor.canRead()) {
-                                System.out.println("The specified file can't be read!");
+                                System.err.println("The specified file can't be read!");
                                 accepted = false;
                             }
                             if (!pathdescriptor.isFile()) {
-                                System.out.println("The specified path doesn't point to a file!");
+                                System.err.println("The specified path doesn't point to a file!");
                                 accepted = false;
                             }
 
@@ -487,12 +494,18 @@ public class AlgoProjekt {
                         while (!accepted) {
                             accepted = true;
                             System.out.print("Please enter a path: ");
-                            path = scanner.nextLine();
+                    try {
+                        path = br.readLine();
+                    } catch (IOException IOEx) {
+                        System.err.println("Sorry, couldn't read the path from the terminal!");
+                        System.err.println("Stacktrace:");
+                        IOEx.printStackTrace(System.err);
+                    }
                             path += ".ser";
                             pathdescriptor = new File(path);
                             System.out.println("Saving in \"" + path + "\"");
                             if (pathdescriptor.exists()) {
-                                System.out.println("The specified file already exists");
+                                System.err.println("The specified file already exists");
                                 accepted = false;
                             }
                         }
