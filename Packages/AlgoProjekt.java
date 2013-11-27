@@ -200,6 +200,9 @@ public class AlgoProjekt {
                             System.err.println("Using the -l option requires an integer after it!");
                             return;
                         }
+                        finally {
+                            i++;
+                        }
                     } else {
                         System.err.println("Using the -l option requires an integer after it!");
                         return;
@@ -452,7 +455,6 @@ public class AlgoProjekt {
                 }
                 switch (value) {
                     case 1:
-                        table = null;
                         table = phase.makeTable(amount, legalChars, length);
                         break;
                     case 2:
